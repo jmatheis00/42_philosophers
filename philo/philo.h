@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:46:26 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/29 11:49:01 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/01 14:25:52 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ typedef struct s_ph
 	int sleep_time;
 	int	no_of_meals;
 
-	pthread_t **philo_ids;
+	int time;
+
+	pthread_t *philo_ids;
 }				t_ph;
 
 

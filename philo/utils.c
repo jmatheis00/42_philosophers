@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 10:34:34 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/29 13:12:30 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/01 13:25:27 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	check_arguments(int ac, char **ag)
 	{
 		while (ag[i][j])
 		{
-			//  || ag[i][j] == '0'
 			if (!ft_isdigit(ag[i][j]))
 			{
 				printf("check argument number %d\n", i);
@@ -89,11 +88,6 @@ int	init_struct(t_ph *ph, char **ag)
 		printf("invalid no. of philosophers\n");
 		return (1);
 	}
-	// while (i < ph->philos)
-	// {
-	// 	pthread_create(ph->philo_ids[i], NULL)
-	// 	i++;
-	// }
 	ph->die_time = ft_atoi(ag[2]);
 	ph->eat_time = ft_atoi(ag[3]);
 	ph->sleep_time = ft_atoi(ag[4]);
