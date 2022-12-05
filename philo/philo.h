@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:46:26 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/05 21:59:15 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/05 22:06:51 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ typedef struct s_thread
 	int	last_meal;
 }		t_thread;
 
+// INIT.C
 t_ph		*init_ph(t_ph *ph, char **ag);
-// int		init_structs(t_ph *ph, char **ag, t_thread **thread);
 t_thread	**init_thread(t_ph *ph, t_thread **thread);
+void		free_structs(t_ph *ph, t_thread **thread)
 
 int		check_arguments(int ac, char **ag);
 

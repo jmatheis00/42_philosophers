@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 20:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/05 22:05:25 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/05 22:06:28 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,26 @@ t_ph *init_ph(t_ph *ph, char **ag)
 	ph->old_time = timestamp();
     ph->new_time = -1;
 	return (ph);
+}
+
+void free_structs(t_ph *ph, t_thread **thread)
+{
+	int	i;
+
+	i = 0;
+	if (ph)
+	{
+		if (ph->forks)
+			free (ph->forks);
+		free (ph);
+	}
+	if (thread)
+	{
+		while(thread[i])
+		{
+			free(thread[i]);
+			i++;
+		}
+		free (thread);
+	}
 }

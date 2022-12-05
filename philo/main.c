@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 09:46:29 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/05 22:05:33 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/05 22:06:14 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,27 +66,6 @@ void print_thread(t_thread **thread)
     }
 }
 
-void free_structs(t_ph *ph, t_thread **thread)
-{
-	int	i;
-
-	i = 0;
-	if (ph)
-	{
-		if (ph->forks)
-			free (ph->forks);
-		free (ph);
-	}
-	if (thread)
-	{
-		while(thread[i])
-		{
-			free(thread[i]);
-			i++;
-		}
-		free (thread);
-	}
-}
 int	main(int ac, char **ag)
 {
 	t_ph	*ph;
