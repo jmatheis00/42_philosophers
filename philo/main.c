@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 09:46:29 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/01 14:58:57 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/05 22:05:33 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,58 +24,86 @@ void *action()
 	return (NULL);
 }
 
-void *sleeping(int i)
+int	timestamp()
 {
-	printf("timestamp: philo %d is sleeping\n", i);
-	return (NULL);
+	struct timeval after;
+	int	time;
+
+	gettimeofday(&after, NULL);
+	time = ((after.tv_sec) * 1000) + ((after.tv_usec) / 1000);
+	return (time);
 }
 
-
-void create_threads(t_ph *ph)
+void	create_threads(t_ph *ph, t_thread **thread)
 {
-	int	i;
-	pthread_t philo_id[ph->philos];
+	int				i;
 
 	i = 0;
 	while (i < ph->philos)
 	{
-		if (pthread_create(&philo_id[i], NULL, &action, NULL))
+		if (pthread_mutex_init(&ph->forks[i], NULL) 
+			|| pthread_create(&thread[i]->id, NULL, &action, NULL))
 		{
+			// free
 			printf("Error occured\n");
-			return ;		
+			exit (1);
 		}
-		if (i % 2 == 0)
-			printf("timestamp: philo %d is sleeping\n", i);
-		else
-			printf("timestamp: philo %d is eating\n", i);
 		i++;
 	}
 }
 
+
+void print_thread(t_thread **thread)
+{
+    int i;
+
+    i = 0;
+    while (thread[i])
+    {
+        printf("left fork thread: %d %d\n", i, thread[i]->left);
+        printf("right fork thread: %d %d\n", i, thread[i]->right);
+        i++;
+    }
+}
+
+void free_structs(t_ph *ph, t_thread **thread)
+{
+	int	i;
+
+	i = 0;
+	if (ph)
+	{
+		if (ph->forks)
+			free (ph->forks);
+		free (ph);
+	}
+	if (thread)
+	{
+		while(thread[i])
+		{
+			free(thread[i]);
+			i++;
+		}
+		free (thread);
+	}
+}
 int	main(int ac, char **ag)
 {
 	t_ph	*ph;
+	t_thread **thread;
 
-	struct timeval ms;
-
-	ph = malloc(1 * sizeof(t_ph));
-	if (!ph)
+	thread = NULL;
+	ph = NULL;
+	if (check_arguments(ac, ag))
 		return (1);
-	memset(ph, 0, sizeof(t_ph));
-	if (check_arguments(ac, ag) || init_struct(ph, ag))
-		return (1);
-	gettimeofday(&ms, NULL);
-	unsigned int start_time = ((ms.tv_sec * 1000) + (ms.tv_usec)/ 1000);
-	// printf("TIME: seconds %ld microseconds %d\n", ms.tv_sec, ms.tv_usec);
-	printf("START TIME: %d\n", start_time);
-	// while ((get_time() - start_time) < time_in_ms)
-	// 	usleep(time_in_ms / 10);
-	// RESET TIMESTAMP ???
-	if (ph->philos % 2 == 0)
+	ph = init_ph(ph, ag);
+	thread = init_thread(ph, thread);
+	if (ph && thread)
 	{
-		create_threads(ph);
+		print_thread(thread);
+		// create_threads(ph, thread);
 	}
 	else
-		printf("unequal no. of philos\n");
+		free_structs(ph, thread);
 	return (0);
 }
