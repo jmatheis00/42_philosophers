@@ -6,7 +6,7 @@
 #    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/08 14:02:01 by jmatheis          #+#    #+#              #
-#    Updated: 2022/12/05 21:26:45 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/12/08 10:28:41 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,9 @@ CFLAGS      := -Wall -Wextra -Werror
 
 SRCS        := main.c \
 				utils.c \
-				action.c \
-				init.c
+				routine.c \
+				init.c \
+				error_and_free.c
 OBJS        := $(SRCS:%.c=%.o)
 
 # **************************************************************************** #
