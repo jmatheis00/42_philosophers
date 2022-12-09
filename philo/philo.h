@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:46:26 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/08 15:42:33 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/09 13:33:03 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,19 @@ typedef struct s_thread
 {
 	pthread_t	id;
 
+	int			ph_id;
 	int			left;
 	int			right;
 
 	int			no_meals;
 	int			last_meal;
+
 }		t_thread;
 
 typedef struct s_ph
 {
 	int				iter;
+	int				stop;
 
 	int				philos;
 	int				die_time;
@@ -42,6 +45,7 @@ typedef struct s_ph
 	int				no_of_meals;
 
 	pthread_mutex_t	*forks;
+	pthread_t		death_thr;
 
 	unsigned int	old_time;
 	unsigned int	new_time;
@@ -57,18 +61,19 @@ t_thread	**init_thread(t_ph *ph, t_thread **thread);
 char		*error_return(char *val, char *message);
 void		free_structs(t_ph *ph, t_thread **thread);
 
-int			check_arguments(int ac, char **ag);
-
-int			timestamp(t_ph *ph);
-
 // ROUTINE.C
-void		take_forks(t_ph *ph);
+void		take_forks(t_ph *ph, t_thread *thread);
+void		putdown_forks(t_ph *ph, t_thread *thread);
+void		eating(t_ph *ph, t_thread *thread);
+void		sleeping(t_ph *ph, t_thread *thread);
+void		print_action(t_ph *ph, t_thread *thread, char *str);
 
-void		sleeping(t_ph *ph);
-void		eating(t_ph *ph);
-void		thinking(t_ph *ph);
 int			check_last_meal(t_ph *ph);
+int			check_death(t_ph *ph);
 
-void		print_action(t_ph *ph, char *str);
+// UTILS.C
+void		get_starttime(t_ph *ph);
+int			timestamp(t_ph *ph);
+int			check_arguments(int ac, char **ag);
 
 #endif

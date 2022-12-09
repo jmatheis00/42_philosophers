@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 20:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/08 15:06:44 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/09 13:39:10 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ t_thread	**init_thread(t_ph *ph, t_thread **thread)
 		thread[i]->no_meals = 0;
 		thread[i]->last_meal = 0;
 		thread[i]->id = 0;
+		thread[i]->ph_id = i + 1;
 		i++;
 	}
 	thread[i] = NULL;
@@ -77,6 +78,8 @@ t_ph	*init_ph(t_ph *ph, char **ag)
 	ph->eat_time = ft_atoi(ag[3]);
 	ph->sleep_time = ft_atoi(ag[4]);
 	ph->no_of_meals = -1;
+	ph->iter = 0;
+	ph->stop = 0;
 	if (ag[5])
 		ph->no_of_meals = ft_atoi(ag[5]);
 	ph->forks = malloc(sizeof(pthread_mutex_t) * ph->philos);

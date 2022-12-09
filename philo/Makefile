@@ -6,14 +6,14 @@
 #    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/08 14:02:01 by jmatheis          #+#    #+#              #
-#    Updated: 2022/12/08 10:28:41 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/12/09 10:21:46 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        := philo
 
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror
+CFLAGS      := -Wall -Wextra -Werror -fsanitize=address -g
 
 SRCS        := main.c \
 				utils.c \
