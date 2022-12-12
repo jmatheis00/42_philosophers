@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 09:46:29 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/09 14:27:26 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:54:39 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,22 @@
 // usleep() --> calling thread sleeps
 void	*routine(void *arg)
 {
-	t_ph *ph;
-	int	tmp;
+	t_ph	*ph;
+	int		tmp;
 
 	ph = (t_ph *)arg;
-	get_starttime(ph);
-	ph->new_time = timestamp(ph);
 	tmp = ph->iter;
-	ph->thread[tmp]->last_meal = (int)ph->new_time;
+	ph->iter++;
+	get_starttime(ph);
+	if (ph->philos < 2)
+		return (NULL);
 	if (tmp % 2 == 0)
 	{
 		print_action(ph, ph->thread[tmp], "thinking");
-		usleep(ph->eat_time * 1000);
+		ft_usleep(ph->eat_time);
 	}
 	while (ph->stop != -1)
-	{
-		take_forks(ph, ph->thread[tmp]);
-		eating(ph, ph->thread[tmp]);
-		putdown_forks(ph, ph->thread[tmp]);
-		sleeping(ph, ph->thread[tmp]);
-		print_action(ph, ph->thread[tmp], "thinking");
-	}
+		all_actions(ph, ph->thread[tmp]);
 	return (NULL);
 }
 
@@ -65,30 +60,33 @@ void	create_mutexes(t_ph *ph, t_thread **thread)
 
 void	*deathcheck(void *arg)
 {
-	t_ph *ph;
+	t_ph	*ph;
+	int		i;
 
 	ph = (t_ph *)arg;
+	i = 0;
 	while (1)
 	{
-		if (!check_last_meal(ph)|| !check_death(ph))
-			return (NULL);
+		if (!check_last_meal(ph) || !check_death(ph))
+			exit (1);
 	}
 	return (NULL);
 }
 
 void	start_routine(t_ph *ph, t_thread **thread)
 {
-	ph->iter = 0;
-	while (ph->iter < ph->philos - 1)
+	int	i;
+
+	i = 0;
+	while (i < ph->philos)
 	{
-		if (pthread_create(&thread[ph->iter]->id, NULL, &routine, ph))
+		if (pthread_create(&thread[i]->id, NULL, &routine, ph))
 		{
 			printf("Error occured\n");
-			free_structs(ph, thread);
+			free_structs(ph, ph->thread);
 			exit (1);
 		}
-		// usleep(1000);
-		ph->iter++;
+		i++;
 	}
 	if (pthread_create(&ph->death_thr, NULL, &deathcheck, ph))
 	{
@@ -97,12 +95,6 @@ void	start_routine(t_ph *ph, t_thread **thread)
 		exit (1);
 	}
 	pthread_join(ph->death_thr, NULL);
-}
-
-void	wait_for_threads(t_ph *ph, t_thread **thread)
-{
-	int	i;
-
 	i = 0;
 	while (i < ph->philos)
 	{
@@ -110,6 +102,18 @@ void	wait_for_threads(t_ph *ph, t_thread **thread)
 		i++;
 	}
 }
+
+// void	wait_for_threads(t_ph *ph, t_thread **thread)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < ph->philos)
+// 	{
+// 		pthread_join(thread[i]->id, NULL);
+// 		i++;
+// 	}
+// }
 
 // initialize thread in ph
 // t_thread *thread is possible as well
@@ -127,7 +131,7 @@ int	main(int ac, char **ag)
 	{
 		create_mutexes(ph, ph->thread);
 		start_routine(ph, ph->thread);
-		wait_for_threads(ph, ph->thread);
+		// wait_for_threads(ph, ph->thread);
 	}
 	else
 		free_structs(ph, ph->thread);

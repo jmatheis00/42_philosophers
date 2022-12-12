@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 20:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/09 13:39:10 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:42:52 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ t_ph	*init_ph(t_ph *ph, char **ag)
 	if (!ph)
 		return (NULL);
 	ph->philos = ft_atoi(ag[1]);
-	if (ph->philos < 2)
-		error_return(NULL, "invalid no. of philosophers");
+	if (ph->philos < 1)
+		error_return(NULL, "invalid no. of philosophers"); //exit here?
 	ph->die_time = ft_atoi(ag[2]);
 	ph->eat_time = ft_atoi(ag[3]);
 	ph->sleep_time = ft_atoi(ag[4]);

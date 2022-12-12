@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 10:34:34 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/09 14:17:30 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:14:13 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,22 @@ int	check_arguments(int ac, char **ag)
 		i++;
 	}
 	return (0);
+}
+
+void	ft_usleep(long stop)
+{
+	struct timeval	before;
+	
+	long	starttime;
+	long	diff;
+
+	gettimeofday(&before, NULL);
+	starttime = ((before.tv_sec) * 1000) + ((before.tv_usec) / 1000);
+	diff = 0;
+	while (diff < stop)
+	{
+		usleep(100);
+		gettimeofday(&before, NULL);
+		diff = ((before.tv_sec) * 1000) + ((before.tv_usec) / 1000) - starttime;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:46:26 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/09 13:33:03 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:53:20 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,16 @@ char		*error_return(char *val, char *message);
 void		free_structs(t_ph *ph, t_thread **thread);
 
 // ROUTINE.C
-void		take_forks(t_ph *ph, t_thread *thread);
-void		putdown_forks(t_ph *ph, t_thread *thread);
-void		eating(t_ph *ph, t_thread *thread);
-void		sleeping(t_ph *ph, t_thread *thread);
+void		all_actions(t_ph *ph, t_thread *thread);
 void		print_action(t_ph *ph, t_thread *thread, char *str);
-
-int			check_last_meal(t_ph *ph);
 int			check_death(t_ph *ph);
+int			check_last_meal(t_ph *ph);
 
 // UTILS.C
 void		get_starttime(t_ph *ph);
 int			timestamp(t_ph *ph);
 int			check_arguments(int ac, char **ag);
+
+void		ft_usleep(long stop);
 
 #endif
