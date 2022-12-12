@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 09:46:29 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/12 14:54:39 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:58:20 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,9 @@ void	start_routine(t_ph *ph, t_thread **thread)
 		exit (1);
 	}
 	pthread_join(ph->death_thr, NULL);
-	i = 0;
-	while (i < ph->philos)
-	{
+	i = -1;
+	while (++i < ph->philos)
 		pthread_join(thread[i]->id, NULL);
-		i++;
-	}
 }
 
 // void	wait_for_threads(t_ph *ph, t_thread **thread)

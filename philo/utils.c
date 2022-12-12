@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 10:34:34 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/12 14:14:13 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:57:16 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,8 @@ int	check_arguments(int ac, char **ag)
 void	ft_usleep(long stop)
 {
 	struct timeval	before;
-	
-	long	starttime;
-	long	diff;
+	long			starttime;
+	long			diff;
 
 	gettimeofday(&before, NULL);
 	starttime = ((before.tv_sec) * 1000) + ((before.tv_usec) / 1000);

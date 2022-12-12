@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 18:34:28 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/12 14:52:55 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:57:45 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	check_last_meal(t_ph *ph)
 	i = 0;
 	if (ph->no_of_meals != -1)
 	{
-		while(i < ph->philos)
+		while (i < ph->philos)
 		{
 			if (ph->thread[i]->no_meals < ph->no_of_meals)
 				return (1);
@@ -74,7 +74,8 @@ int	check_death(t_ph *ph)
 	i = 0;
 	while (i < ph->philos)
 	{
-		if  (ph->new_time - ph->thread[i]->last_meal > (unsigned int)ph->die_time)
+		if (ph->new_time - ph->thread[i]->last_meal
+			> (unsigned int)ph->die_time)
 		{
 			ph->stop = -1;
 			print_action(ph, ph->thread[i], "died");
