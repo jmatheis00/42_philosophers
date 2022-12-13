@@ -6,19 +6,20 @@
 #    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/08 14:02:01 by jmatheis          #+#    #+#              #
-#    Updated: 2022/12/09 10:21:46 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/12/13 14:50:17 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        := philo
 
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS      := -Wall -Wextra -Werror #-fsanitize=address -g
 
 SRCS        := main.c \
-				utils.c \
+				parsing_and_init.c \
+				time.c \
 				routine.c \
-				init.c \
+				control_thread.c \
 				error_and_free.c
 OBJS        := $(SRCS:%.c=%.o)
 
@@ -29,9 +30,9 @@ OBJS        := $(SRCS:%.c=%.o)
 .PHONY: all clean fclean re
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@
+	$(CC) $(CFLAGS) $(OBJS) -o $@ -lpthread
 
-%.o: %.c %.d
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(NAME)

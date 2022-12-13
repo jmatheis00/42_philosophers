@@ -6,13 +6,29 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 18:34:28 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/12 14:57:45 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/13 16:11:49 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	all_actions(t_ph *ph, t_thread *thread)
+// locking to avoid data races
+void	print_action(t_ph *ph, t_thread *thread, char *str)
+{
+	if (pthread_mutex_lock(&ph->print_mutex) < 0)
+		error_return(NULL, "locking error");
+	ph->new_time = timestamp(ph);
+	if (str[0] == 'f')
+		printf("%d\t%d has taken a %s\n", ph->new_time, thread->ph_id, str);
+	else if (str[0] == 'd')
+		printf("%d\t%d has %s\n", ph->new_time, thread->ph_id, str);
+	else
+		printf("%d\t%d is %s\n", ph->new_time, thread->ph_id, str);
+	if (pthread_mutex_unlock(&ph->print_mutex) < 0)
+		error_return(NULL, "locking error");
+}
+
+static void	all_actions(t_ph *ph, t_thread *thread)
 {
 	if (pthread_mutex_lock(&ph->forks[thread->left]) < 0)
 		error_return(NULL, "locking error");
@@ -24,7 +40,6 @@ void	all_actions(t_ph *ph, t_thread *thread)
 	print_action(ph, thread, "eating");
 	thread->no_meals += 1;
 	ft_usleep(ph->eat_time);
-	ph->new_time = timestamp(ph);
 	thread->last_meal = ph->new_time;
 	if (pthread_mutex_unlock(&ph->forks[thread->left]) < 0)
 		error_return(NULL, "unlocking error");
@@ -32,56 +47,74 @@ void	all_actions(t_ph *ph, t_thread *thread)
 		error_return(NULL, "unlocking error");
 	print_action(ph, thread, "sleeping");
 	ft_usleep(ph->sleep_time);
-	ph->new_time = timestamp(ph);
 	print_action(ph, thread, "thinking");
 }
 
-void	print_action(t_ph *ph, t_thread *thread, char *str)
+static void	*routine(void *arg)
 {
-	ph->new_time = timestamp(ph);
-	if (str[0] == 'f')
-		printf("%d\t%d has taken a %s\n", ph->new_time, thread->ph_id, str);
-	else if (str[0] == 'd')
-		printf("%d\t%d has %s\n", ph->new_time, thread->ph_id, str);
-	else
-		printf("%d\t%d is %s\n", ph->new_time, thread->ph_id, str);
-}
+	t_ph	*ph;
+	int		tmp;
 
-int	check_last_meal(t_ph *ph)
-{
-	int	i;
-
-	i = 0;
-	if (ph->no_of_meals != -1)
+	ph = (t_ph *)arg;
+	tmp = ph->iter;
+	ph->iter++;
+	get_starttime(ph);
+	if (tmp % 2 == 0)
 	{
-		while (i < ph->philos)
-		{
-			if (ph->thread[i]->no_meals < ph->no_of_meals)
-				return (1);
-			i++;
-		}
-		ph->stop = -1;
-		printf("end of simulation\n");
-		exit (0);
+		print_action(ph, ph->thread[tmp], "thinking");
+		ft_usleep(ph->eat_time);
 	}
-	return (1);
+	while (ph->stop != -1)
+		all_actions(ph, ph->thread[tmp]);
+	return (NULL);
 }
 
-int	check_death(t_ph *ph)
+static void	create_mutexes(t_ph *ph, t_thread **thread)
 {
 	int	i;
 
 	i = 0;
+	if (pthread_mutex_init(&ph->print_mutex, NULL))
+	{
+		printf("Error occured\n");
+		free_structs(ph, thread);
+		exit (1);
+	}
 	while (i < ph->philos)
 	{
-		if (ph->new_time - ph->thread[i]->last_meal
-			> (unsigned int)ph->die_time)
+		if (pthread_mutex_init(&ph->forks[i], NULL))
 		{
-			ph->stop = -1;
-			print_action(ph, ph->thread[i], "died");
-			exit (0); //return here to free everything correctly
+			printf("Error occured\n");
+			free_structs(ph, thread);
+			exit (1);
 		}
 		i++;
 	}
-	return (1);
+}
+
+// pthread_join: waits until death thread returns
+// pthread_detach
+void	start_routine(t_ph *ph, t_thread **thread)
+{
+	int	i;
+
+	i = 0;
+	create_mutexes(ph, thread);
+	while (i < ph->philos)
+	{
+		if (pthread_create(&thread[i]->id, NULL, &routine, ph))
+		{
+			printf("Error occured\n");
+			free_structs(ph, ph->thread);
+			exit (1);
+		}
+		i++;
+	}
+	if (pthread_create(&ph->death_thr, NULL, &deathcheck, ph))
+	{
+		printf("Error occured\n");
+		free_structs(ph, ph->thread);
+		exit (1);
+	}
+	pthread_join(ph->death_thr, NULL);
 }
