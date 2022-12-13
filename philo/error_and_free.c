@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 10:25:59 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/13 14:29:01 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/13 16:37:30 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ void	prepare_exit(t_ph *ph, t_thread **thread)
 	int	i;
 
 	i = 0;
+	pthread_mutex_destroy(&ph->print_mutex);
 	while (i < ph->philos)
 	{
 		pthread_detach(thread[i]->id);
 		pthread_mutex_destroy(&ph->forks[i]);
 		i++;
 	}
+	pthread_detach(ph->death_thr);
 }
