@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 20:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/13 15:58:30 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/15 16:37:45 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,18 @@ t_thread	**init_thread(t_ph *ph, t_thread **thread)
 	i = 0;
 	thread = malloc(sizeof(t_thread *) * (ph->philos + 1));
 	if (!thread)
+	{
 		error_return(NULL, "allocation error");
+		return (NULL);
+	}
 	while (i < ph->philos)
 	{
 		thread[i] = malloc(sizeof(t_thread) * 1);
 		if (!thread[i])
+		{
 			error_return(NULL, "allocation error");
+			return (NULL);		
+		}
 		thread[i]->left = i;
 		if (i == 0)
 			thread[i]->right = ph->philos - 1;
@@ -106,10 +112,16 @@ t_ph	*init_ph(t_ph *ph, char **ag)
 {
 	ph = malloc(1 * sizeof(t_ph));
 	if (!ph)
+	{
 		error_return(NULL, "allocation error");
+		return (NULL);
+	}
 	ph->philos = ft_atoi(ag[1]);
 	if (ph->philos < 1)
+	{
 		error_return(NULL, "invalid no. of philosophers");
+		return (NULL);
+	}
 	ph->die_time = ft_atoi(ag[2]);
 	ph->eat_time = ft_atoi(ag[3]);
 	ph->sleep_time = ft_atoi(ag[4]);
@@ -120,7 +132,10 @@ t_ph	*init_ph(t_ph *ph, char **ag)
 		ph->no_of_meals = ft_atoi(ag[5]);
 	ph->forks = malloc(sizeof(pthread_mutex_t) * ph->philos);
 	if (!ph->forks)
+	{
 		error_return(NULL, "allocation error");
+		return (NULL);
+	}
 	ph->death_thr = 0;
 	ph->old_time = 0;
 	ph->new_time = 0;

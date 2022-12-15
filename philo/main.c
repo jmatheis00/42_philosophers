@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 09:46:29 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/13 16:03:11 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/15 16:36:59 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	main(int ac, char **ag)
 	if (check_arguments(ac, ag))
 		return (1);
 	ph = init_ph(ph, ag);
+	if (!ph)
+		return (-1);
 	ph->thread = init_thread(ph, ph->thread);
 	if (ph && ph->thread)
 		start_routine(ph, ph->thread);
