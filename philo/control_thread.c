@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:43:00 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/13 16:02:00 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/15 12:24:37 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	check_death(t_ph *ph)
 			>= ph->die_time)
 		{
 			ph->stop = -1;
-			usleep(200);
+			usleep(500);
 			print_action(ph, ph->thread[i], "died");
 			return (0);
 		}

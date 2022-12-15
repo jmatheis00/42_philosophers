@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 10:25:59 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/13 16:37:30 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/15 12:25:20 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	free_structs(t_ph *ph, t_thread **thread)
 	}
 }
 
+// Detach: separates executed thread from thread object
 void	prepare_exit(t_ph *ph, t_thread **thread)
 {
 	int	i;
@@ -52,5 +53,4 @@ void	prepare_exit(t_ph *ph, t_thread **thread)
 		pthread_mutex_destroy(&ph->forks[i]);
 		i++;
 	}
-	pthread_detach(ph->death_thr);
 }
