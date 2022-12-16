@@ -6,7 +6,7 @@
 #    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/08 14:02:01 by jmatheis          #+#    #+#              #
-#    Updated: 2022/12/13 14:50:17 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/12/16 12:07:14 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CFLAGS      := -Wall -Wextra -Werror #-fsanitize=address -g
 
 SRCS        := main.c \
 				parsing_and_init.c \
-				time.c \
+				utils.c \
 				routine.c \
 				control_thread.c \
 				error_and_free.c

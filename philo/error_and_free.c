@@ -6,17 +6,11 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 10:25:59 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/15 12:25:20 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/16 11:47:24 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-char	*error_return(char *val, char *message)
-{
-	printf("%s\n", message);
-	return (val);
-}
 
 void	free_structs(t_ph *ph, t_thread **thread)
 {

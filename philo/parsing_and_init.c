@@ -6,18 +6,11 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 20:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/15 16:37:45 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:05:25 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
 
 int	check_arguments(int ac, char **ag)
 {
@@ -35,7 +28,7 @@ int	check_arguments(int ac, char **ag)
 	{
 		while (ag[i][j])
 		{
-			if (!ft_isdigit(ag[i][j]))
+			if (ag[i][j] < '0' || ag[i][j] > '9')
 			{
 				printf("check argument number %d\n", i);
 				return (1);
@@ -51,27 +44,19 @@ int	check_arguments(int ac, char **ag)
 static int	ft_atoi(const char *str)
 {
 	int	i;
-	int	sign;
 	int	numb;
 
 	i = 0;
 	numb = 0;
-	sign = 1;
 	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\v'
 		|| str[i] == '\f' || str[i] == '\t' || str[i] == '\r')
 		i++;
-	if (str[i] == '+' || str[i] == '-')
-	{
-		if (str[i] == '-')
-			sign = sign * -1;
-		i++;
-	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		numb = 10 * numb + (str[i] - 48);
 		i++;
 	}
-	return (numb * sign);
+	return (numb);
 }
 
 t_thread	**init_thread(t_ph *ph, t_thread **thread)
@@ -82,7 +67,7 @@ t_thread	**init_thread(t_ph *ph, t_thread **thread)
 	thread = malloc(sizeof(t_thread *) * (ph->philos + 1));
 	if (!thread)
 	{
-		error_return(NULL, "allocation error");
+		printf("allocation error\n");
 		return (NULL);
 	}
 	while (i < ph->philos)
@@ -90,7 +75,7 @@ t_thread	**init_thread(t_ph *ph, t_thread **thread)
 		thread[i] = malloc(sizeof(t_thread) * 1);
 		if (!thread[i])
 		{
-			error_return(NULL, "allocation error");
+			printf("allocation error\n");
 			return (NULL);		
 		}
 		thread[i]->left = i;
@@ -113,13 +98,13 @@ t_ph	*init_ph(t_ph *ph, char **ag)
 	ph = malloc(1 * sizeof(t_ph));
 	if (!ph)
 	{
-		error_return(NULL, "allocation error");
+		printf("allocation error\n");
 		return (NULL);
 	}
 	ph->philos = ft_atoi(ag[1]);
 	if (ph->philos < 1)
 	{
-		error_return(NULL, "invalid no. of philosophers");
+		printf("invalid no. of philosophers\n");
 		return (NULL);
 	}
 	ph->die_time = ft_atoi(ag[2]);
@@ -133,7 +118,7 @@ t_ph	*init_ph(t_ph *ph, char **ag)
 	ph->forks = malloc(sizeof(pthread_mutex_t) * ph->philos);
 	if (!ph->forks)
 	{
-		error_return(NULL, "allocation error");
+		printf("allocation error\n");
 		return (NULL);
 	}
 	ph->death_thr = 0;

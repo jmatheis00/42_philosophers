@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:46:26 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/13 15:57:54 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:04:00 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void		prepare_exit(t_ph *ph, t_thread **thread);
 
 // ROUTINE.C
 void		start_routine(t_ph *ph, t_thread **thread);
-void		print_action(t_ph *ph, t_thread *thread, char *str);
+int			print_action(t_ph *ph, t_thread *thread, char *str);
 
 // CONTROL_THREAD.C
 void		*deathcheck(void *arg);

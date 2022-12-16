@@ -6,48 +6,57 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 18:34:28 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/15 12:49:41 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:06:13 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// locking to avoid data races
-void	print_action(t_ph *ph, t_thread *thread, char *str)
-{
-	if (pthread_mutex_lock(&ph->print_mutex) < 0)
-		error_return(NULL, "locking error");
-	ph->new_time = timestamp(ph);
-	if (str[0] == 'f')
-		printf("%d\t%d has taken a %s\n", ph->new_time, thread->ph_id, str);
-	else if (str[0] == 'd')
-		printf("%d\t%d has %s\n", ph->new_time, thread->ph_id, str);
-	else
-		printf("%d\t%d is %s\n", ph->new_time, thread->ph_id, str);
-	if (pthread_mutex_unlock(&ph->print_mutex) < 0)
-		error_return(NULL, "locking error");
-}
-
-static void	all_actions(t_ph *ph, t_thread *thread)
+static int	eating(t_ph *ph, t_thread *thread)
 {
 	if (pthread_mutex_lock(&ph->forks[thread->left]) < 0)
-		error_return(NULL, "locking error");
-	print_action(ph, thread, "fork");
+	{
+		printf("locking error\n");
+		return (1);		
+	}
+	if (print_action(ph, thread, "fork"))
+		return (1);
 	if (pthread_mutex_lock(&ph->forks[thread->right]) < 0)
-		error_return(NULL, "locking error");
-	print_action(ph, thread, "fork");
+	{
+		printf("locking error\n");
+		return (1);		
+	}
+	if (print_action(ph, thread, "fork"))
+		return (1);
 	thread->last_meal = ph->new_time;
-	print_action(ph, thread, "eating");
+	if (print_action(ph, thread, "eating"))
+		return (1);
 	thread->no_meals += 1;
 	ft_usleep(ph->eat_time);
 	thread->last_meal = ph->new_time;
+	return (0);
+}
+
+static int	all_actions(t_ph *ph, t_thread *thread)
+{
+	if (eating(ph, thread))
+		return (1);
 	if (pthread_mutex_unlock(&ph->forks[thread->left]) < 0)
-		error_return(NULL, "unlocking error");
+	{
+		printf("unlocking error\n");
+		return (1);			
+	}
 	if (pthread_mutex_unlock(&ph->forks[thread->right]) < 0)
-		error_return(NULL, "unlocking error");
-	print_action(ph, thread, "sleeping");
+	{
+		printf("locking error\n");
+		return (1);	
+	}
+	if (print_action(ph, thread, "sleeping"))
+		return (1);
 	ft_usleep(ph->sleep_time);
-	print_action(ph, thread, "thinking");
+	if (print_action(ph, thread, "thinking"))
+		return (1);
+	return (0);
 }
 
 static void	*routine(void *arg)
@@ -61,11 +70,15 @@ static void	*routine(void *arg)
 	get_starttime(ph);
 	if (tmp % 2 == 0)
 	{
-		print_action(ph, ph->thread[tmp], "thinking");
+		if (print_action(ph, ph->thread[tmp], "thinking"))
+			return (NULL);
 		ft_usleep(ph->eat_time);
 	}
 	while (ph->stop != -1)
-		all_actions(ph, ph->thread[tmp]);
+	{
+		if (all_actions(ph, ph->thread[tmp]))
+			return (NULL);
+	}
 	return (NULL);
 }
 
