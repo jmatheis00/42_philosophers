@@ -6,25 +6,25 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 18:34:28 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/16 12:06:13 by jmatheis         ###   ########.fr       */
+/*   Updated: 2023/09/26 02:26:08 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
 static int	eating(t_ph *ph, t_thread *thread)
 {
 	if (pthread_mutex_lock(&ph->forks[thread->left]) < 0)
 	{
 		printf("locking error\n");
-		return (1);		
+		return (1);
 	}
 	if (print_action(ph, thread, "fork"))
 		return (1);
 	if (pthread_mutex_lock(&ph->forks[thread->right]) < 0)
 	{
 		printf("locking error\n");
-		return (1);		
+		return (1);
 	}
 	if (print_action(ph, thread, "fork"))
 		return (1);
@@ -44,12 +44,12 @@ static int	all_actions(t_ph *ph, t_thread *thread)
 	if (pthread_mutex_unlock(&ph->forks[thread->left]) < 0)
 	{
 		printf("unlocking error\n");
-		return (1);			
+		return (1);
 	}
 	if (pthread_mutex_unlock(&ph->forks[thread->right]) < 0)
 	{
 		printf("locking error\n");
-		return (1);	
+		return (1);
 	}
 	if (print_action(ph, thread, "sleeping"))
 		return (1);

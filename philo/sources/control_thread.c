@@ -6,11 +6,11 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:43:00 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/16 12:07:06 by jmatheis         ###   ########.fr       */
+/*   Updated: 2023/09/26 02:23:39 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
 static int	check_last_meal(t_ph *ph)
 {

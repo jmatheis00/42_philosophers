@@ -6,7 +6,7 @@
 #    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/08 14:02:01 by jmatheis          #+#    #+#              #
-#    Updated: 2022/12/16 12:07:14 by jmatheis         ###   ########.fr        #
+#    Updated: 2023/09/26 02:22:36 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ SRCS        := main.c \
 				routine.c \
 				control_thread.c \
 				error_and_free.c
-OBJS        := $(SRCS:%.c=%.o)
+
+M_SRCS		:= $(addprefix ./sources/, $(SRCS))
+OBJS        := $(M_SRCS:%.c=%.o)
 
 # **************************************************************************** #
 #   RULES                                                                      #

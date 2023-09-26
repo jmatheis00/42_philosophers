@@ -6,11 +6,11 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 20:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/16 12:05:25 by jmatheis         ###   ########.fr       */
+/*   Updated: 2023/09/26 02:27:09 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
 int	check_arguments(int ac, char **ag)
 {
@@ -76,7 +76,7 @@ t_thread	**init_thread(t_ph *ph, t_thread **thread)
 		if (!thread[i])
 		{
 			printf("allocation error\n");
-			return (NULL);		
+			return (NULL);
 		}
 		thread[i]->left = i;
 		if (i == 0)

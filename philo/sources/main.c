@@ -6,16 +6,11 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 09:46:29 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/15 16:36:59 by jmatheis         ###   ########.fr       */
+/*   Updated: 2023/09/26 02:24:06 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-
-// CHECK DIE CHECK
-// PROBLEM IF SLEEP TIME IS SAME AS EAT TIME
-
-// CHECK IF ONLY ONE PHILO EXISTS
+#include "../includes/philo.h"
 
 // ./philo
 // no_of_philos

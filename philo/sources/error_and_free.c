@@ -6,11 +6,11 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 10:25:59 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/12/16 11:47:24 by jmatheis         ###   ########.fr       */
+/*   Updated: 2023/09/26 02:23:37 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
 void	free_structs(t_ph *ph, t_thread **thread)
 {
