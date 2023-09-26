@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 20:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2023/09/26 02:27:09 by jmatheis         ###   ########.fr       */
+/*   Updated: 2023/09/26 02:32:18 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ static int	ft_atoi(const char *str)
 	return (numb);
 }
 
+static void	*return_null_with_message(char *m)
+{
+	printf("%s\n", m);
+	return (NULL);
+}
+
 t_thread	**init_thread(t_ph *ph, t_thread **thread)
 {
 	int	i;
@@ -66,18 +72,12 @@ t_thread	**init_thread(t_ph *ph, t_thread **thread)
 	i = 0;
 	thread = malloc(sizeof(t_thread *) * (ph->philos + 1));
 	if (!thread)
-	{
-		printf("allocation error\n");
-		return (NULL);
-	}
+		return (return_null_with_message("allocation error"));
 	while (i < ph->philos)
 	{
 		thread[i] = malloc(sizeof(t_thread) * 1);
 		if (!thread[i])
-		{
-			printf("allocation error\n");
-			return (NULL);
-		}
+			return (return_null_with_message("allocation error"));
 		thread[i]->left = i;
 		if (i == 0)
 			thread[i]->right = ph->philos - 1;
@@ -97,16 +97,10 @@ t_ph	*init_ph(t_ph *ph, char **ag)
 {
 	ph = malloc(1 * sizeof(t_ph));
 	if (!ph)
-	{
-		printf("allocation error\n");
-		return (NULL);
-	}
+		return (return_null_with_message("allocation error"));
 	ph->philos = ft_atoi(ag[1]);
 	if (ph->philos < 1)
-	{
-		printf("invalid no. of philosophers\n");
-		return (NULL);
-	}
+		return (return_null_with_message("invalid no. of philosophers"));
 	ph->die_time = ft_atoi(ag[2]);
 	ph->eat_time = ft_atoi(ag[3]);
 	ph->sleep_time = ft_atoi(ag[4]);
@@ -117,10 +111,7 @@ t_ph	*init_ph(t_ph *ph, char **ag)
 		ph->no_of_meals = ft_atoi(ag[5]);
 	ph->forks = malloc(sizeof(pthread_mutex_t) * ph->philos);
 	if (!ph->forks)
-	{
-		printf("allocation error\n");
-		return (NULL);
-	}
+		return (return_null_with_message("allocation error"));
 	ph->death_thr = 0;
 	ph->old_time = 0;
 	ph->new_time = 0;
